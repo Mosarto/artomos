@@ -5,13 +5,19 @@ import { useLayoutEffect, useRef, useState } from "react";
 
 import { gsap } from "@/lib/gsap";
 
-const FRAME_COUNT = 192;
-const PRELOAD_RADIUS = 6;
-const MAX_DECODED_FRAMES = 28;
+const SOURCE_FRAME_COUNT = 192;
+const FRAME_COUNT = 97;
+const PRELOAD_RADIUS = 3;
+const MAX_DECODED_FRAMES = 18;
 
-function frameSource(index: number): string {
-  const frame = String(index + 1).padStart(6, "0");
-  return `/assets/artomos/transitions/1_2/frame_${frame}.avif`;
+function frameSource(index: number, isMobile: boolean): string {
+  const sourceFrame =
+    index === FRAME_COUNT - 1 ? SOURCE_FRAME_COUNT : index * 2 + 1;
+  const frame = String(sourceFrame).padStart(6, "0");
+
+  return isMobile
+    ? `/assets/artomos/transitions/1_2-mobile/frame_${frame}.webp`
+    : `/assets/artomos/transitions/1_2/frame_${frame}.avif`;
 }
 
 function drawCover(
@@ -63,13 +69,14 @@ export function HeroToAboutTransition() {
     if (!section || !canvas || !context) return;
 
     let active = true;
-    let currentFrame = 0;
+    let currentFrame = -1;
     const cache = new Map<number, HTMLImageElement>();
     const getFrameFocus = () => (window.innerWidth <= 767 ? 0.75 : 0.25);
+    const isMobile = () => window.innerWidth <= 767;
 
     const resizeCanvas = () => {
       const bounds = canvas.getBoundingClientRect();
-      const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
+      const pixelRatio = 1;
       canvas.width = Math.max(1, Math.round(bounds.width * pixelRatio));
       canvas.height = Math.max(1, Math.round(bounds.height * pixelRatio));
 
@@ -121,7 +128,7 @@ export function HeroToAboutTransition() {
 
       const image = new window.Image();
       image.decoding = "async";
-      image.src = frameSource(safeIndex);
+      image.src = frameSource(safeIndex, isMobile());
       image.onload = () => {
         if (!active) return;
         if (drawWhenReady && currentFrame === safeIndex) {
@@ -148,7 +155,14 @@ export function HeroToAboutTransition() {
     };
 
     const renderFrame = (index: number) => {
-      currentFrame = Math.max(0, Math.min(FRAME_COUNT - 1, Math.round(index)));
+      const nextFrame = Math.max(
+        0,
+        Math.min(FRAME_COUNT - 1, Math.round(index)),
+      );
+
+      if (nextFrame === currentFrame && cache.has(nextFrame)) return;
+
+      currentFrame = nextFrame;
       section.dataset.frame = String(currentFrame + 1);
       const image = loadFrame(currentFrame, true);
 
