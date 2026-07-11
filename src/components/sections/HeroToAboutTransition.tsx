@@ -7,17 +7,15 @@ import { gsap } from "@/lib/gsap";
 
 const SOURCE_FRAME_COUNT = 192;
 const FRAME_COUNT = 97;
-const PRELOAD_RADIUS = 3;
-const MAX_DECODED_FRAMES = 18;
+const PRELOAD_RADIUS = 5;
+const MAX_DECODED_FRAMES = 24;
 
-function frameSource(index: number, isMobile: boolean): string {
+function frameSource(index: number): string {
   const sourceFrame =
     index === FRAME_COUNT - 1 ? SOURCE_FRAME_COUNT : index * 2 + 1;
   const frame = String(sourceFrame).padStart(6, "0");
 
-  return isMobile
-    ? `/assets/artomos/transitions/1_2-mobile/frame_${frame}.webp`
-    : `/assets/artomos/transitions/1_2/frame_${frame}.avif`;
+  return `/assets/artomos/transitions/1_2/frame_${frame}.avif`;
 }
 
 function drawCover(
@@ -69,34 +67,45 @@ export function HeroToAboutTransition() {
     if (!section || !canvas || !context) return;
 
     let active = true;
+    let ready = false;
     let currentFrame = -1;
     const cache = new Map<number, HTMLImageElement>();
     const getFrameFocus = () => (window.innerWidth <= 767 ? 0.75 : 0.25);
-    const isMobile = () => window.innerWidth <= 767;
+
+    const markReady = () => {
+      if (ready) return;
+      ready = true;
+      setIsReady(true);
+    };
+
+    const paint = (image: HTMLImageElement) => {
+      drawCover(
+        context,
+        image,
+        canvas.width,
+        canvas.height,
+        getFrameFocus(),
+      );
+      markReady();
+    };
 
     const resizeCanvas = () => {
       const bounds = canvas.getBoundingClientRect();
-      const pixelRatio = 1;
-      canvas.width = Math.max(1, Math.round(bounds.width * pixelRatio));
-      canvas.height = Math.max(1, Math.round(bounds.height * pixelRatio));
+      canvas.width = Math.max(1, Math.round(bounds.width));
+      canvas.height = Math.max(1, Math.round(bounds.height));
 
       const image = cache.get(currentFrame);
-      if (image?.complete && image.naturalWidth) {
-        drawCover(
-          context,
-          image,
-          canvas.width,
-          canvas.height,
-          getFrameFocus(),
-        );
-      }
+      if (image?.complete && image.naturalWidth) paint(image);
     };
 
     const trimCache = (focus: number) => {
       if (cache.size <= MAX_DECODED_FRAMES) return;
 
       const removable = [...cache.keys()]
-        .filter((index) => index !== focus && index !== 0 && index !== FRAME_COUNT - 1)
+        .filter(
+          (index) =>
+            index !== focus && index !== 0 && index !== FRAME_COUNT - 1,
+        )
         .sort((a, b) => Math.abs(b - focus) - Math.abs(a - focus));
 
       while (cache.size > MAX_DECODED_FRAMES && removable.length) {
@@ -114,33 +123,17 @@ export function HeroToAboutTransition() {
 
       if (cached) {
         if (drawWhenReady && cached.complete && cached.naturalWidth) {
-          drawCover(
-            context,
-            cached,
-            canvas.width,
-            canvas.height,
-            getFrameFocus(),
-          );
-          setIsReady(true);
+          paint(cached);
         }
         return cached;
       }
 
       const image = new window.Image();
       image.decoding = "async";
-      image.src = frameSource(safeIndex, isMobile());
+      image.src = frameSource(safeIndex);
       image.onload = () => {
         if (!active) return;
-        if (drawWhenReady && currentFrame === safeIndex) {
-          drawCover(
-            context,
-            image,
-            canvas.width,
-            canvas.height,
-            getFrameFocus(),
-          );
-          setIsReady(true);
-        }
+        if (drawWhenReady && currentFrame === safeIndex) paint(image);
       };
       cache.set(safeIndex, image);
       trimCache(currentFrame);
@@ -166,17 +159,7 @@ export function HeroToAboutTransition() {
       section.dataset.frame = String(currentFrame + 1);
       const image = loadFrame(currentFrame, true);
 
-      if (image.complete && image.naturalWidth) {
-        drawCover(
-          context,
-          image,
-          canvas.width,
-          canvas.height,
-          getFrameFocus(),
-        );
-        setIsReady(true);
-      }
-
+      if (image.complete && image.naturalWidth) paint(image);
       preloadAround(currentFrame);
     };
 

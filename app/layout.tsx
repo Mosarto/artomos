@@ -1,31 +1,6 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import {
-  Cormorant_Garamond,
-  IBM_Plex_Mono,
-  Manrope,
-} from "next/font/google";
 import "./globals.css";
-
-const displayFont = Cormorant_Garamond({
-  variable: "--font-display",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  display: "swap",
-});
-
-const sansFont = Manrope({
-  variable: "--font-sans",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const monoFont = IBM_Plex_Mono({
-  variable: "--font-mono",
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  display: "swap",
-});
 
 const title = "Artomos — Software, Aplicativos e Inteligência Artificial";
 const description =
@@ -84,11 +59,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
-      <body
-        className={`${displayFont.variable} ${sansFont.variable} ${monoFont.variable}`}
-      >
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

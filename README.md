@@ -1,98 +1,73 @@
-# vinext-starter
+# Artomos
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+Site institucional da Artomos, uma software house focada em produtos digitais, plataformas web, aplicativos, automação e inteligência artificial aplicada.
 
-## Prerequisites
+O projeto combina uma direção visual editorial com uma transição animada entre a abertura e a seção Sobre, usando frames AVIF em `public/assets/artomos/transitions/1_2`.
 
-- Node.js `>=22.13.0`
+## Stack
 
-## Quick Start
+- Vinext / Next.js
+- React 19
+- GSAP + ScrollTrigger
+- Lenis para smooth scroll
+- CSS global em `app/globals.css`
+- Assets públicos em `public/assets/artomos`
+
+## Requisitos
+
+- Node.js `22.x` LTS (`>=22.13.0 <24`)
+- npm
+
+Use a versao indicada em `.nvmrc` quando possivel. O Node 24 no Windows pode encerrar o `vinext build` com uma assert nativa depois de concluir a geracao.
+
+## Rodando localmente
 
 ```bash
 npm install
 npm run dev
+```
+
+Depois abra `http://localhost:3000`.
+
+## Validação
+
+```bash
+npm run lint
+npm test
+```
+
+`npm test` executa o build de produção e valida o HTML renderizado.
+
+## Estrutura
+
+```text
+app/
+  layout.tsx        Metadata, fontes locais e casca global
+  page.tsx          Composição principal da landing page
+
+src/
+  components/       Seções, layout e componentes visuais
+  config/site.ts    Conteúdo institucional e caminhos de mídia
+  data/             Dados de serviços, cases e processo
+  lib/              Utilitários de animação e helpers
+
+public/
+  assets/artomos/   Imagens, backgrounds e frames da transição
+  fonts/            Fontes locais usadas pelo CSS
+```
+
+## Assets
+
+- `public/assets/artomos/bc_*.png`: imagens base das seções.
+- `public/assets/artomos/transitions/1_2/*.avif`: sequência da transição hero/sobre.
+- `public/fonts/*.woff2`: fontes locais para evitar carregamento externo ou caminhos gerados.
+
+## Deploy
+
+O projeto está preparado para build com Vinext:
+
+```bash
 npm run build
 ```
 
-This starter does not use `wrangler.jsonc`.
-
-## Included Shape
-
-- edit site code under `app/`
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/schema.ts` starts intentionally empty
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
-
-## Workspace Auth Headers
-
-OpenAI workspace sites can read the current user's email from
-`oai-authenticated-user-email`.
-
-SIWC-authenticated workspace sites may also receive
-`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
-`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
-`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
-
-Treat the full name as optional and fall back to email when it is absent:
-
-```tsx
-import { headers } from "next/headers";
-
-export default async function Home() {
-  const requestHeaders = await headers();
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
-
-  const displayName = fullName ?? email;
-  // ...
-}
-```
-
-## Optional Dispatch-Owned ChatGPT Sign-In
-
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
-optional or required ChatGPT sign-in:
-
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
-  anonymous visitors through Sign in with ChatGPT.
-- Use `chatGPTSignInPath(returnTo)` and `chatGPTSignOutPath(returnTo)` for
-  browser links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in
-  or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because
-  they depend on per-request identity headers.
-
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
-OAuth cookies, and identity header injection. Do not implement app routes for
-those reserved paths. Routes that do not import and call the helper remain
-anonymous-compatible.
-
-SIWC establishes identity only; it does not prove workspace membership. Use the
-Sites hosting platform's access policy controls for workspace-wide restrictions,
-or enforce explicit server-side membership or allowlist checks.
-
-Use SIWC for account pages, user-specific dashboards, saved records, and write
-actions tied to the current ChatGPT user. Leave public content anonymous.
-
-## Useful Commands
-
-- `npm run dev`: start local development
-- `npm run build`: verify the vinext build output
-- `npm test`: build the starter and verify its rendered loading skeleton
-- `npm run db:generate`: generate Drizzle migrations after schema changes
-
-## Learn More
-
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+As configurações de hosting ficam em `.openai/hosting.json`. O projeto não usa banco, migrations, exemplos D1 ou autenticação opcional do starter.
