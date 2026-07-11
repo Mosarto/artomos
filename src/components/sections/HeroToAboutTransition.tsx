@@ -65,7 +65,7 @@ export function HeroToAboutTransition() {
     let active = true;
     let currentFrame = 0;
     const cache = new Map<number, HTMLImageElement>();
-    const getFrameFocus = () => (window.innerWidth <= 767 ? 0.42 : 0.5);
+    const getFrameFocus = () => (window.innerWidth <= 767 ? 0.75 : 0.25);
 
     const resizeCanvas = () => {
       const bounds = canvas.getBoundingClientRect();

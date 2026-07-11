@@ -119,21 +119,6 @@ export function HeroSection() {
               "[data-hero-actions]",
               { autoAlpha: 0, y: 18 },
               0.94,
-            )
-            .from(
-              "[data-hero-aside]",
-              { autoAlpha: 0, x: desktop ? 24 : 0, y: desktop ? 0 : 20 },
-              0.72,
-            )
-            .from(
-              "[data-hero-capabilities]",
-              { autoAlpha: 0, y: 16 },
-              1.04,
-            )
-            .from(
-              "[data-hero-decoration]",
-              { autoAlpha: 0, scale: 0.9, stagger: 0.08 },
-              0.52,
             );
 
           if (artwork) {
@@ -149,7 +134,7 @@ export function HeroSection() {
             });
           }
 
-          gsap.to(
+          gsap.fromTo(
             [
               ".artomos-hero__copy",
               "[data-hero-aside]",
@@ -157,15 +142,21 @@ export function HeroSection() {
               ".artomos-hero__technical-rail",
             ],
             {
-            y: desktop ? -92 : -44,
-            autoAlpha: 0,
-            ease: "none",
-            scrollTrigger: {
-              trigger: section,
-              start: "top top",
-              end: "bottom 28%",
-              scrub: 0.8,
+              y: 0,
+              autoAlpha: 1,
             },
+            {
+              y: desktop ? -92 : -44,
+              autoAlpha: 0,
+              ease: "none",
+              immediateRender: false,
+              scrollTrigger: {
+                trigger: section,
+                start: "top top",
+                end: "bottom 28%",
+                scrub: 0.8,
+                invalidateOnRefresh: true,
+              },
             },
           );
 
