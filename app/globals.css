@@ -383,29 +383,46 @@ img { max-width: 100%; }
 }
 
 @media (max-width: 767px) {
+  :root { --header-height:70px; }
   .artomos-container { width:calc(100% - 28px); }
-  .artomos-header__wordmark { font-size:1.75rem; }
+  .artomos-header__brand { gap:12px; }
+  .artomos-brand-mark { grid-template-columns:repeat(2,5px); grid-template-rows:repeat(2,5px); gap:5px; width:15px; height:15px; }
+  .artomos-brand-mark span { width:5px; height:5px; }
+  .artomos-header__wordmark { font-size:1.55rem; }
+  .artomos-header__menu-button { width:44px; height:44px; }
   .artomos-mobile-menu__footer { flex-direction:column; }
-  .artomos-hero__container { padding-top:calc(var(--header-height) + 44px); }
-  .artomos-hero__title { font-size:clamp(3.15rem,14.5vw,4.25rem); line-height:.91; }
-  .artomos-hero__description { margin-top:24px; font-size:.88rem; line-height:1.65; }
-  .artomos-hero__actions { align-items:stretch; flex-direction:column; }
+  .artomos-hero__container { padding-top:calc(var(--header-height) + 34px); }
+  .artomos-hero .artomos-section-label { max-width:300px; gap:10px; margin-bottom:15px; font-size:.6rem; letter-spacing:.12em; }
+  .artomos-hero__title { font-size:clamp(2.85rem,13vw,3.65rem); line-height:.9; }
+  .artomos-hero__description { max-width:355px; margin-top:21px; padding-right:12px; color:rgba(241,238,232,.8); font-size:.82rem; line-height:1.55; text-shadow:0 2px 15px #070707; }
+  .artomos-hero__actions { align-items:stretch; flex-direction:column; gap:10px; margin-top:22px; }
   .artomos-hero__actions .artomos-button { width:100%; }
+  .artomos-hero__actions .artomos-button { min-height:52px; }
   .artomos-hero__explore { display:none; }
-  .artomos-hero__capabilities { grid-template-columns:1fr; margin-top:36px; }
-  .artomos-hero__capabilities li { min-height:58px; border-right:0; border-bottom:1px solid var(--color-border-soft); padding:10px 14px; }
-  .artomos-hero__capabilities li:last-child { border-bottom:0; }
+  .artomos-hero__capabilities { grid-template-columns:repeat(2,1fr); margin-top:28px; }
+  .artomos-hero__capabilities li { min-height:92px; display:grid; align-content:center; gap:4px; border-right:1px solid var(--color-border-soft); border-bottom:1px solid var(--color-border-soft); padding:13px 14px; font-size:.57rem; line-height:1.45; }
+  .artomos-hero__capabilities li:nth-child(even) { border-right:0; }
+  .artomos-hero__capabilities li:nth-child(n+3) { border-bottom:0; }
+  .artomos-hero__capability-index { font-size:1.35rem; }
   .artomos-hero-about-transition__poster,
-  .artomos-hero-about-transition__canvas { object-position:68% center; }
-  .artomos-hero-about-transition__veil { background:linear-gradient(180deg,#070707 0%,transparent 14%,transparent 82%,#070707 100%),linear-gradient(90deg,rgba(7,7,7,.35),transparent 72%); }
+  .artomos-hero-about-transition__canvas { object-position:42% center; }
+  .artomos-hero-about-transition__veil { background:linear-gradient(180deg,#070707 0%,transparent 12%,transparent 78%,#070707 100%),linear-gradient(90deg,rgba(7,7,7,.82) 0%,rgba(7,7,7,.52) 58%,rgba(7,7,7,.08) 100%); }
   .artomos-services, .artomos-cases, .artomos-process-contact { padding:88px 0 75px; }
+  .artomos-services { padding-top:80px; }
+  .artomos-services::before { background:linear-gradient(90deg,rgba(7,7,7,.9) 0%,rgba(7,7,7,.62) 68%,rgba(7,7,7,.14) 100%),linear-gradient(180deg,rgba(7,7,7,.15),rgba(7,7,7,.82) 52%,#0d0d0d 100%); }
+  .artomos-services__intro { display:block; }
+  .artomos-services__intro-copy { max-width:355px; }
   .artomos-services__title, .artomos-cases__title, .artomos-process__title { font-size:clamp(3.1rem,14vw,4.25rem); line-height:.91; }
-  .artomos-services__subtitle { font-size:.62rem; letter-spacing:.17em; }
-  .artomos-services__artwork-frame { min-height:430px; }
+  .artomos-services__title { font-size:clamp(2.9rem,13vw,3.65rem); }
+  .artomos-services__subtitle { margin-top:20px; font-size:.6rem; line-height:1.6; letter-spacing:.15em; }
+  .artomos-services__description { margin-top:18px; font-size:.84rem; line-height:1.65; }
+  .artomos-services__manifesto { width:100%; margin-top:24px; padding:12px 14px; font-size:.58rem; }
+  .artomos-services__artwork-frame { display:none; }
+  .artomos-services__connector { margin-top:34px; }
   .artomos-services__grid { grid-template-columns:1fr; }
-  .artomos-service-card, .artomos-service-card:nth-child(3n), .artomos-service-card:nth-child(n+4) { min-height:290px; border-right:0; border-bottom:1px solid var(--color-border); }
+  .artomos-service-card, .artomos-service-card:nth-child(3n), .artomos-service-card:nth-child(n+4) { min-height:250px; padding:21px 19px; border-right:0; border-bottom:1px solid var(--color-border); }
   .artomos-service-card:last-child { border-bottom:0; }
-  .artomos-service-card__title { margin-top:35px; }
+  .artomos-service-card__title { margin-top:25px; }
   .artomos-cases__orbit, .artomos-process-contact__decoration { display:none; }
   .artomos-case-card { min-height:540px; padding:20px; }
   .artomos-case-card__highlights { grid-template-columns:1fr; }

@@ -19,6 +19,7 @@ function drawCover(
   image: HTMLImageElement,
   width: number,
   height: number,
+  focusX = 0.5,
 ) {
   const imageRatio = image.naturalWidth / image.naturalHeight;
   const canvasRatio = width / height;
@@ -32,7 +33,7 @@ function drawCover(
     sourceY = (image.naturalHeight - sourceHeight) / 2;
   } else {
     sourceWidth = image.naturalHeight * canvasRatio;
-    sourceX = (image.naturalWidth - sourceWidth) / 2;
+    sourceX = (image.naturalWidth - sourceWidth) * focusX;
   }
 
   context.clearRect(0, 0, width, height);
@@ -64,6 +65,7 @@ export function HeroToAboutTransition() {
     let active = true;
     let currentFrame = 0;
     const cache = new Map<number, HTMLImageElement>();
+    const getFrameFocus = () => (window.innerWidth <= 767 ? 0.42 : 0.5);
 
     const resizeCanvas = () => {
       const bounds = canvas.getBoundingClientRect();
@@ -73,7 +75,13 @@ export function HeroToAboutTransition() {
 
       const image = cache.get(currentFrame);
       if (image?.complete && image.naturalWidth) {
-        drawCover(context, image, canvas.width, canvas.height);
+        drawCover(
+          context,
+          image,
+          canvas.width,
+          canvas.height,
+          getFrameFocus(),
+        );
       }
     };
 
@@ -99,7 +107,13 @@ export function HeroToAboutTransition() {
 
       if (cached) {
         if (drawWhenReady && cached.complete && cached.naturalWidth) {
-          drawCover(context, cached, canvas.width, canvas.height);
+          drawCover(
+            context,
+            cached,
+            canvas.width,
+            canvas.height,
+            getFrameFocus(),
+          );
           setIsReady(true);
         }
         return cached;
@@ -111,7 +125,13 @@ export function HeroToAboutTransition() {
       image.onload = () => {
         if (!active) return;
         if (drawWhenReady && currentFrame === safeIndex) {
-          drawCover(context, image, canvas.width, canvas.height);
+          drawCover(
+            context,
+            image,
+            canvas.width,
+            canvas.height,
+            getFrameFocus(),
+          );
           setIsReady(true);
         }
       };
@@ -133,7 +153,13 @@ export function HeroToAboutTransition() {
       const image = loadFrame(currentFrame, true);
 
       if (image.complete && image.naturalWidth) {
-        drawCover(context, image, canvas.width, canvas.height);
+        drawCover(
+          context,
+          image,
+          canvas.width,
+          canvas.height,
+          getFrameFocus(),
+        );
         setIsReady(true);
       }
 
