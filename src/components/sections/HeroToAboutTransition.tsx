@@ -13,6 +13,7 @@ const FRAME_FETCH_TIMEOUT = 15_000;
 const IMAGE_LOAD_TIMEOUT = 12_000;
 const IMAGE_DECODE_TIMEOUT = 5_000;
 const READY_EVENT = "artomos:experience-ready";
+const ULTRAWIDE_RATIO = 2.18;
 
 function frameSource(index: number): string {
   const frame = String(index + 1).padStart(6, "0");
@@ -49,6 +50,25 @@ function drawCover(
 ) {
   const imageRatio = image.naturalWidth / image.naturalHeight;
   const canvasRatio = width / height;
+  const isUltrawide = canvasRatio >= ULTRAWIDE_RATIO;
+
+  if (isUltrawide) {
+    const coverScale = Math.max(width / image.naturalWidth, height / image.naturalHeight);
+    const containScale = Math.min(width / image.naturalWidth, height / image.naturalHeight);
+    const ratioProgress = Math.min(1, (canvasRatio - ULTRAWIDE_RATIO) / 0.28);
+    const scale = coverScale - (coverScale - containScale) * (0.36 + ratioProgress * 0.16);
+    const targetWidth = image.naturalWidth * scale;
+    const targetHeight = image.naturalHeight * scale;
+    const targetX = (width - targetWidth) * focusX;
+    const targetY = (height - targetHeight) * 0.42;
+
+    context.clearRect(0, 0, width, height);
+    context.fillStyle = "#070707";
+    context.fillRect(0, 0, width, height);
+    context.drawImage(image, targetX, targetY, targetWidth, targetHeight);
+    return;
+  }
+
   let sourceWidth = image.naturalWidth;
   let sourceHeight = image.naturalHeight;
   let sourceX = 0;

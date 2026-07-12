@@ -1,4 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
+import Image from "next/image";
 import type { CaseStudy } from "../../data/cases";
 
 export interface CaseCardProps {
@@ -12,6 +13,16 @@ export function CaseCard({ project, className = "" }: CaseCardProps) {
       className={`artomos-case-card ${className}`.trim()}
       data-project={project.id}
     >
+      {project.href ? (
+        <a
+          className="artomos-case-card__link-overlay"
+          href={project.href}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={`Abrir o projeto ${project.name} no GitHub`}
+        />
+      ) : null}
+
       <header className="artomos-case-card__header">
         <span className="artomos-case-card__number" aria-hidden="true">
           {project.number}
@@ -25,13 +36,30 @@ export function CaseCard({ project, className = "" }: CaseCardProps) {
       <div
         className="artomos-case-card__visual"
         role="img"
-        aria-label={`Espaço reservado para uma imagem do projeto ${project.name}`}
+        aria-label={
+          project.image
+            ? `Imagem do projeto ${project.name}`
+            : `Espaço reservado para uma imagem do projeto ${project.name}`
+        }
       >
-        <span className="artomos-case-card__diagonal artomos-case-card__diagonal--a" />
-        <span className="artomos-case-card__diagonal artomos-case-card__diagonal--b" />
-        <span className="artomos-case-card__visual-label">
-          IMAGEM DO PROJETO
-        </span>
+        {project.image ? (
+          <Image
+            className="artomos-case-card__image"
+            src={project.image}
+            alt={project.imageAlt ?? `Imagem do projeto ${project.name}`}
+            fill
+            sizes="(max-width: 1024px) 100vw, 33vw"
+            unoptimized
+          />
+        ) : (
+          <>
+            <span className="artomos-case-card__diagonal artomos-case-card__diagonal--a" />
+            <span className="artomos-case-card__diagonal artomos-case-card__diagonal--b" />
+            <span className="artomos-case-card__visual-label">
+              IMAGEM DO PROJETO
+            </span>
+          </>
+        )}
       </div>
 
       <ul className="artomos-case-card__highlights" aria-label="Destaques do projeto">
