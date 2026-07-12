@@ -253,8 +253,14 @@ export function HeroSection() {
               {siteConfig.hero.specialtiesLabel}
             </h2>
             <ul className="artomos-hero__specialties">
-              {siteConfig.hero.specialties.map((specialty) => (
-                <li key={specialty}>{specialty}</li>
+              {siteConfig.hero.specialties.map((specialty, index) => (
+                <li key={specialty}>
+                  <span aria-hidden="true">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <strong>{specialty}</strong>
+                  <i aria-hidden="true" />
+                </li>
               ))}
             </ul>
 
