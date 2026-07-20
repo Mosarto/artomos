@@ -34,7 +34,14 @@ test("server-renders the Artomos landing page", async () => {
   assert.match(html, /CRIAMOS/i);
   assert.match(html, /SOBRE A ARTOMOS/i);
   assert.match(html, /PROJETOS/i);
+  assert.match(html, /favicon\.ico/i);
   assert.match(html, /favicon\.svg/i);
+  assert.match(html, /favicon-32x32\.png/i);
+  assert.match(html, /apple-touch-icon\.png/i);
+  assert.match(html, /contato@artomos\.com/i);
+  assert.doesNotMatch(html, /contato@artomos\.com\.br/i);
+  assert.match(html, /https:\/\/github\.com\/Mosarto\/aether/i);
+  assert.match(html, /ENVIAR POR E-MAIL/i);
   assert.match(html, /Projeto privado/i);
   assert.doesNotMatch(html, /artomos-loader/i);
 });

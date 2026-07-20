@@ -78,13 +78,16 @@ export const siteConfig = {
     titleLines: ["VAMOS CRIAR", "SEU PRÓXIMO", "PRODUTO?"],
     description:
       "Se você possui uma ideia, um processo manual ou um sistema que precisa evoluir, a Artomos pode ajudar a definir e construir o próximo passo.",
-    email: "contato@artomos.com.br",
-    emailHref: "mailto:contato@artomos.com.br",
+    email: "contato@artomos.com",
+    emailHref: "mailto:contato@artomos.com",
     serviceMode: "Atendimento remoto",
     reach: "Brasil e projetos internacionais",
     actions: [
-      { label: "INICIAR UM PROJETO", href: "mailto:contato@artomos.com.br" },
-      { label: "AGENDAR CONVERSA", href: "mailto:contato@artomos.com.br" },
+      { label: "INICIAR UM PROJETO", href: "#formulario-contato" },
+      {
+        label: "AGENDAR CONVERSA",
+        href: "mailto:contato@artomos.com?subject=Agendar%20uma%20conversa%20com%20a%20Artomos&body=Ol%C3%A1%2C%20gostaria%20de%20agendar%20uma%20conversa.%0A%0AMelhores%20dias%20e%20hor%C3%A1rios%3A%0A",
+      },
     ],
   },
   footer: {

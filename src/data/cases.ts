@@ -9,6 +9,7 @@ export interface CaseStudy {
   image?: string;
   imageAlt?: string;
   disclosure: string;
+  href?: string;
 }
 
 export const cases = [
@@ -30,7 +31,8 @@ export const cases = [
     highlights: ["Arquitetura escalável", "Contexto centralizado"],
     image: "/assets/aether.avif",
     imageAlt: "Interface do projeto Aether",
-    disclosure: "Projeto entregue · Visual demonstrativo",
+    disclosure: "Open source · Ver no GitHub",
+    href: "https://github.com/Mosarto/aether",
   },
   {
     id: "ecossistema-mobile-white-label",

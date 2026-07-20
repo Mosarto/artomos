@@ -25,7 +25,10 @@ ENV NODE_ENV=production
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
-COPY --from=builder /app ./
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/scripts/serve.mjs ./scripts/serve.mjs
+COPY package.json package-lock.json ./
 
 EXPOSE 3000
 

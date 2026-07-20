@@ -12,7 +12,7 @@ const organizationSchema = {
   "@type": "Organization",
   name: "Artomos",
   url: "https://artomos.com.br",
-  email: "contato@artomos.com.br",
+  email: "contato@artomos.com",
   description:
     "Software house brasileira especializada em software sob medida, aplicativos, plataformas web, automações e inteligência artificial.",
   areaServed: ["BR", "Worldwide"],

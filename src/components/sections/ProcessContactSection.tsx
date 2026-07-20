@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpRight, Globe2, Mail, Radio } from "lucide-react";
+import { ArrowUpRight, ChevronDown, Globe2, Mail, Radio } from "lucide-react";
 import {
   useLayoutEffect,
   useRef,
@@ -250,14 +250,32 @@ export function ProcessContactSection() {
     }
 
     setErrors({});
+    const formData = new FormData(form);
+    const name = readFormValue(formData, "name");
+    const email = readFormValue(formData, "email");
+    const company = readFormValue(formData, "company");
+    const message = readFormValue(formData, "message");
+    const projectTypeSelect = form.elements.namedItem("projectType");
+    const projectType =
+      projectTypeSelect instanceof HTMLSelectElement
+        ? projectTypeSelect.selectedOptions[0]?.text ?? "Não informado"
+        : "Não informado";
+    const subject = `Novo projeto — ${projectType} — ${name}`;
+    const body = [
+      `Nome: ${name}`,
+      `E-mail: ${email}`,
+      `Empresa: ${company || "Não informada"}`,
+      `Tipo de projeto: ${projectType}`,
+      "",
+      "Mensagem:",
+      message,
+    ].join("\n");
 
-    // Integração intencionalmente pendente: conecte aqui Resend, Formspree,
-    // uma API própria ou uma Server Action. Não há simulação de envio.
     setFeedback({
       kind: "validated",
-      message:
-        "Dados validados. O envio ainda não está conectado; fale conosco pelo e-mail abaixo.",
+      message: "Tudo certo. Abrindo seu aplicativo de e-mail para concluir o envio.",
     });
+    window.location.href = `${siteConfig.contact.emailHref}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   return (
@@ -361,6 +379,7 @@ export function ProcessContactSection() {
             </div>
 
             <form
+              id="formulario-contato"
               className="artomos-contact-form"
               noValidate
               onSubmit={handleSubmit}
@@ -419,27 +438,30 @@ export function ProcessContactSection() {
 
               <div className="artomos-contact-form__field">
                 <label htmlFor="contact-project-type">Tipo de projeto</label>
-                <select
-                  id="contact-project-type"
-                  name="projectType"
-                  defaultValue=""
-                  required
-                  aria-invalid={Boolean(errors.projectType)}
-                  aria-describedby={
-                    errors.projectType ? "contact-project-type-error" : undefined
-                  }
-                  onChange={() => clearFieldError("projectType")}
-                >
-                  <option value="" disabled>
-                    Selecione uma opção
-                  </option>
-                  <option value="software-sob-medida">Software sob medida</option>
-                  <option value="aplicativo-mobile">Aplicativo mobile</option>
-                  <option value="plataforma-web">Plataforma web</option>
-                  <option value="ia-automacao">IA e automação</option>
-                  <option value="estrategia-design">Estratégia e design</option>
-                  <option value="outro">Outro</option>
-                </select>
+                <div className="artomos-contact-form__select-wrap">
+                  <select
+                    id="contact-project-type"
+                    name="projectType"
+                    defaultValue=""
+                    required
+                    aria-invalid={Boolean(errors.projectType)}
+                    aria-describedby={
+                      errors.projectType ? "contact-project-type-error" : undefined
+                    }
+                    onChange={() => clearFieldError("projectType")}
+                  >
+                    <option value="" disabled>
+                      Selecione uma opção
+                    </option>
+                    <option value="software-sob-medida">Software sob medida</option>
+                    <option value="aplicativo-mobile">Aplicativo mobile</option>
+                    <option value="plataforma-web">Plataforma web</option>
+                    <option value="ia-automacao">IA e automação</option>
+                    <option value="estrategia-design">Estratégia e design</option>
+                    <option value="outro">Outro</option>
+                  </select>
+                  <ChevronDown aria-hidden="true" size={16} strokeWidth={1.35} />
+                </div>
                 {errors.projectType ? (
                   <span
                     id="contact-project-type-error"
@@ -476,7 +498,7 @@ export function ProcessContactSection() {
                   type="submit"
                   className="artomos-button artomos-button--primary artomos-contact-form__submit"
                 >
-                  <span>VALIDAR DADOS</span>
+                  <span>ENVIAR POR E-MAIL</span>
                   <ArrowUpRight aria-hidden="true" size={18} strokeWidth={1.5} />
                 </button>
                 <p
