@@ -3,6 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 import { siteConfig } from "@/config/site";
 
 import { Container } from "./Container";
+import { BrandMark } from "./BrandMark";
 
 function FooterBrand() {
   return (
@@ -11,12 +12,7 @@ function FooterBrand() {
       href="#inicio"
       aria-label="Artomos — voltar ao início"
     >
-      <span className="artomos-brand-mark" aria-hidden="true">
-        <span />
-        <span />
-        <span />
-        <span />
-      </span>
+      <BrandMark />
       <span className="artomos-footer__wordmark">Artomos</span>
     </a>
   );

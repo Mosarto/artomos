@@ -1,4 +1,4 @@
-import { ArrowUpRight } from "lucide-react";
+import { LockKeyhole } from "lucide-react";
 import Image from "next/image";
 import type { CaseStudy } from "../../data/cases";
 
@@ -13,16 +13,6 @@ export function CaseCard({ project, className = "" }: CaseCardProps) {
       className={`artomos-case-card ${className}`.trim()}
       data-project={project.id}
     >
-      {project.href ? (
-        <a
-          className="artomos-case-card__link-overlay"
-          href={project.href}
-          target="_blank"
-          rel="noreferrer"
-          aria-label={`Abrir o projeto ${project.name} no GitHub`}
-        />
-      ) : null}
-
       <header className="artomos-case-card__header">
         <span className="artomos-case-card__number" aria-hidden="true">
           {project.number}
@@ -78,12 +68,10 @@ export function CaseCard({ project, className = "" }: CaseCardProps) {
         ))}
       </ul>
 
-      <ArrowUpRight
-        className="artomos-case-card__arrow"
-        size={22}
-        strokeWidth={1.25}
-        aria-hidden="true"
-      />
+      <p className="artomos-case-card__disclosure">
+        <LockKeyhole size={13} strokeWidth={1.35} aria-hidden="true" />
+        <span>{project.disclosure}</span>
+      </p>
     </article>
   );
 }

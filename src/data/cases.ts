@@ -8,7 +8,7 @@ export interface CaseStudy {
   highlights: readonly string[];
   image?: string;
   imageAlt?: string;
-  href?: string;
+  disclosure: string;
 }
 
 export const cases = [
@@ -30,7 +30,7 @@ export const cases = [
     highlights: ["Arquitetura escalável", "Contexto centralizado"],
     image: "/assets/aether.avif",
     imageAlt: "Interface do projeto Aether",
-    href: "https://github.com/Mosarto/aether",
+    disclosure: "Projeto entregue · Visual demonstrativo",
   },
   {
     id: "ecossistema-mobile-white-label",
@@ -41,6 +41,9 @@ export const cases = [
       "Estrutura multiplataforma preparada para atender diferentes operações, marcas e configurações sem duplicação desnecessária de código.",
     technologies: ["Flutter", "REST API", "Firebase", "BLoC", "Analytics"],
     highlights: ["Experiência multiplataforma", "Arquitetura escalável"],
+    image: "/assets/case-mobile-white-label.avif",
+    imageAlt: "Exemplo visual de um ecossistema mobile white-label",
+    disclosure: "Projeto privado · Visual demonstrativo",
   },
   {
     id: "automacao-conversacional",
@@ -51,5 +54,8 @@ export const cases = [
       "Sistema para organizar grandes volumes de conversas, gerar relatórios, consultar informações por contexto e apoiar decisões operacionais.",
     technologies: ["Python", "LLM", "RAG", "APIs", "Bancos vetoriais"],
     highlights: ["Automação de processos", "Contexto centralizado"],
+    image: "/assets/case-automacao-conversacional.avif",
+    imageAlt: "Exemplo visual de uma plataforma de automação conversacional",
+    disclosure: "Projeto privado · Visual demonstrativo",
   },
 ] as const satisfies readonly CaseStudy[];

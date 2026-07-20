@@ -6,20 +6,10 @@ import { ArrowUpRight, Menu, X } from "lucide-react";
 import { siteConfig } from "@/config/site";
 
 import { Container } from "./Container";
+import { BrandMark } from "./BrandMark";
 
 const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
-
-function BrandMark() {
-  return (
-    <span className="artomos-brand-mark" aria-hidden="true">
-      <span />
-      <span />
-      <span />
-      <span />
-    </span>
-  );
-}
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);

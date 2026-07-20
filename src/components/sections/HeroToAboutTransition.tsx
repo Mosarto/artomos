@@ -12,7 +12,6 @@ const DECODE_CONCURRENCY = 3;
 const FRAME_FETCH_TIMEOUT = 15_000;
 const IMAGE_LOAD_TIMEOUT = 12_000;
 const IMAGE_DECODE_TIMEOUT = 5_000;
-const READY_EVENT = "artomos:experience-ready";
 const ULTRAWIDE_RATIO = 2.18;
 
 function frameSource(index: number): string {
@@ -100,11 +99,6 @@ export function HeroToAboutTransition() {
   const sectionRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isReady, setIsReady] = useState(false);
-  const [loaderVisible, setLoaderVisible] = useState(true);
-  const [loaderComplete, setLoaderComplete] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [preparedFrames, setPreparedFrames] = useState(0);
-  const [loadingLabel, setLoadingLabel] = useState("Preparando tipografia");
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
@@ -122,13 +116,10 @@ export function HeroToAboutTransition() {
 
     let active = true;
     let currentFrame = 0;
-    let releaseTimer: number | undefined;
     let animationCleanup: (() => void) | undefined;
     const frames = new Array<HTMLImageElement>(FRAME_COUNT);
     const objectUrls: string[] = [];
     const getFrameFocus = () => (window.innerWidth <= 767 ? 0.75 : 0.25);
-
-    document.documentElement.classList.add("artomos-is-loading");
 
     const paint = (image: HTMLImageElement) => {
       if (!image.naturalWidth) return;
@@ -181,11 +172,6 @@ export function HeroToAboutTransition() {
     resizeObserver.observe(canvas);
     resizeCanvas();
 
-    const updateProgress = (value: number) => {
-      if (!active) return;
-      setProgress(Math.max(0, Math.min(100, Math.round(value))));
-    };
-
     const loadFonts = async () => {
       if (!("fonts" in document)) return;
 
@@ -198,18 +184,7 @@ export function HeroToAboutTransition() {
     };
 
     const sources = new Array<string>(FRAME_COUNT);
-    let preparedCount = 0;
-
-    const prepareFrames = async (
-      indexes: number[],
-      showLoaderProgress: boolean,
-    ) => {
-      let downloaded = 0;
-
-      if (showLoaderProgress) {
-        setLoadingLabel("Preparando os primeiros quadros");
-      }
-
+    const prepareFrames = async (indexes: number[]) => {
       await runQueue(indexes, LOAD_CONCURRENCY, async (index) => {
         const source = frameSource(index);
         const controller = new AbortController();
@@ -231,17 +206,11 @@ export function HeroToAboutTransition() {
           sources[index] = source;
         } finally {
           window.clearTimeout(fetchTimeout);
-          downloaded += 1;
-          if (showLoaderProgress) {
-            updateProgress(10 + (downloaded / indexes.length) * 45);
-          }
         }
       });
 
       if (!active) return;
-      if (showLoaderProgress) setLoadingLabel("Ajustando a sequência");
 
-      let decoded = 0;
       await runQueue(indexes, DECODE_CONCURRENCY, async (index) => {
         const image = new window.Image();
         image.decoding = "async";
@@ -275,12 +244,6 @@ export function HeroToAboutTransition() {
           ]);
         }
 
-        decoded += 1;
-        preparedCount += 1;
-        if (active) setPreparedFrames(preparedCount);
-        if (showLoaderProgress) {
-          updateProgress(55 + (decoded / indexes.length) * 45);
-        }
         if (currentFrame === index) renderFrame(index);
       });
     };
@@ -324,7 +287,6 @@ export function HeroToAboutTransition() {
     const prepareExperience = async () => {
       await loadFonts();
       if (!active) return;
-      updateProgress(10);
       const initialIndexes = Array.from(
         { length: INITIAL_FRAME_COUNT },
         (_, index) => index,
@@ -334,35 +296,19 @@ export function HeroToAboutTransition() {
         (_, index) => index + INITIAL_FRAME_COUNT,
       );
 
-      await prepareFrames(initialIndexes, true);
+      await prepareFrames(initialIndexes);
       if (!active) return;
 
       renderFrame(0);
       setIsReady(true);
-      setLoadingLabel("A experiência está pronta");
-      updateProgress(100);
       setupScrollAnimation();
-
-      releaseTimer = window.setTimeout(() => {
-        if (!active) return;
-        setLoaderComplete(true);
-        document.documentElement.classList.remove("artomos-is-loading");
-        window.dispatchEvent(new CustomEvent(READY_EVENT));
-
-        releaseTimer = window.setTimeout(() => {
-          if (active) setLoaderVisible(false);
-        }, 850);
-      }, 280);
-
-      void prepareFrames(deferredIndexes, false);
+      void prepareFrames(deferredIndexes);
     };
 
     void prepareExperience();
 
     return () => {
       active = false;
-      document.documentElement.classList.remove("artomos-is-loading");
-      if (releaseTimer !== undefined) window.clearTimeout(releaseTimer);
       resizeObserver.disconnect();
       animationCleanup?.();
       objectUrls.forEach((url) => URL.revokeObjectURL(url));
@@ -370,79 +316,6 @@ export function HeroToAboutTransition() {
   }, []);
 
   return (
-    <>
-      {loaderVisible ? (
-        <div
-          className={`artomos-loader${loaderComplete ? " is-complete" : ""}`}
-          role="status"
-          aria-live="polite"
-          aria-label={`${loadingLabel}: ${progress}%`}
-        >
-          <div className="artomos-loader__frame" aria-hidden="true">
-            <span className="artomos-loader__corner artomos-loader__corner--top" />
-            <span className="artomos-loader__corner artomos-loader__corner--bottom" />
-          </div>
-
-          <div className="artomos-loader__content">
-            <div className="artomos-loader__brand" aria-hidden="true">
-              <span className="artomos-loader__brand-mark">
-                <i />
-                <i />
-                <i />
-                <i />
-              </span>
-              <span>Artomos</span>
-            </div>
-
-            <div className="artomos-loader__edition" aria-hidden="true">
-              <span>01</span>
-              <i />
-              <span>92</span>
-            </div>
-
-            <div className="artomos-loader__headline" aria-hidden="true">
-              <span>Construindo</span>
-              <strong>a experiência.</strong>
-            </div>
-
-            <svg
-              className="artomos-loader__trace"
-              viewBox="0 0 420 76"
-              focusable="false"
-              aria-hidden="true"
-            >
-              <path className="artomos-loader__trace-base" d="M14 58H406" />
-              <path
-                className="artomos-loader__trace-signal"
-                d="M14 58 76 39 132 53 194 17 247 46 315 28 406 52"
-              />
-              <path className="artomos-loader__trace-scan" d="M14 58 76 39 132 53 194 17" />
-              <circle className="artomos-loader__trace-node artomos-loader__trace-node--1" cx="14" cy="58" r="3" />
-              <circle className="artomos-loader__trace-node artomos-loader__trace-node--2" cx="76" cy="39" r="4" />
-              <circle className="artomos-loader__trace-node artomos-loader__trace-node--3" cx="132" cy="53" r="3" />
-              <circle className="artomos-loader__trace-node artomos-loader__trace-node--4" cx="194" cy="17" r="5" />
-              <circle className="artomos-loader__trace-node artomos-loader__trace-node--5" cx="247" cy="46" r="3" />
-              <circle className="artomos-loader__trace-node artomos-loader__trace-node--6" cx="315" cy="28" r="4" />
-              <circle className="artomos-loader__trace-node artomos-loader__trace-node--7" cx="406" cy="52" r="3" />
-            </svg>
-
-            <div className="artomos-loader__meta">
-              <span>{loadingLabel}</span>
-              <strong>
-                {String(preparedFrames).padStart(2, "0")}
-                <small>/92</small>
-              </strong>
-            </div>
-            <div className="artomos-loader__progress" aria-hidden="true">
-              <span style={{ transform: `scaleX(${progress / 100})` }} />
-            </div>
-            <p className="artomos-loader__sequence" aria-hidden="true">
-              ARTOMOS® &nbsp;·&nbsp; DESIGN &amp; ENGENHARIA DIGITAL
-            </p>
-          </div>
-        </div>
-      ) : null}
-
       <section
         ref={sectionRef}
         className={`artomos-hero-about-transition${isReady ? " is-ready" : ""}`}
@@ -466,7 +339,6 @@ export function HeroToAboutTransition() {
           <div className="artomos-hero-about-transition__grain" />
         </div>
       </section>
-    </>
   );
 }
 

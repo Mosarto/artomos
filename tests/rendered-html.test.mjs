@@ -34,16 +34,27 @@ test("server-renders the Artomos landing page", async () => {
   assert.match(html, /CRIAMOS/i);
   assert.match(html, /SOBRE A ARTOMOS/i);
   assert.match(html, /PROJETOS/i);
+  assert.match(html, /favicon\.svg/i);
+  assert.match(html, /Projeto privado/i);
+  assert.doesNotMatch(html, /artomos-loader/i);
 });
 
 test("keeps starter-only surfaces out of the production app", async () => {
-  const [page, layout, packageJson] = await Promise.all([
+  const [page, layout, packageJson, transition] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
+    readFile(
+      new URL(
+        "../src/components/sections/HeroToAboutTransition.tsx",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
   ]);
 
   assert.doesNotMatch(page, /_sites-preview|SkeletonPreview|codex-preview/);
   assert.doesNotMatch(layout, /Starter Project|codex-preview|_sites-preview/);
   assert.doesNotMatch(packageJson, /drizzle|react-loading-skeleton/);
+  assert.doesNotMatch(transition, /artomos-loader|artomos-is-loading/);
 });
