@@ -5,11 +5,12 @@ export interface SocialLink {
 
 export const siteConfig = {
   name: "Artomos",
+  url: "https://artomos.com",
   locale: "pt-BR",
   metadata: {
-    title: "Artomos — Software, Aplicativos e Inteligência Artificial",
+    title: "Artomos | Sites Premium, Software e Inteligência Artificial",
     description:
-      "A Artomos cria software sob medida, aplicativos, plataformas web, automações e soluções com inteligência artificial para empresas que precisam transformar ideias em produtos digitais.",
+      "A Artomos é um estúdio digital brasileiro que cria sites premium animados, software sob medida, aplicativos, automações e produtos com inteligência artificial.",
     canonicalPath: "/",
   },
   navigation: [

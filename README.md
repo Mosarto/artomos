@@ -1,73 +1,112 @@
-# Artomos
+<p align="center">
+  <img src="public/media/artomos-github-header.png" alt="Artomos em um notebook — sites premium, software e inteligência artificial" width="100%" />
+</p>
 
-Site institucional da Artomos, uma software house focada em produtos digitais, plataformas web, aplicativos, automação e inteligência artificial aplicada.
+<h1 align="center">Artomos</h1>
 
-O projeto combina uma direção visual editorial com uma transição animada entre a abertura e a seção Sobre, usando frames AVIF em `public/assets/artomos/transitions/1_2`.
+<p align="center">
+  <strong>Arte, estratégia e engenharia transformadas em experiências digitais.</strong><br />
+  Site institucional da Artomos — um estúdio digital brasileiro que cria sites premium animados, software sob medida e produtos com inteligência artificial.
+</p>
+
+<p align="center">
+  <a href="https://artomos.com">Ver experiência online</a>
+  ·
+  <a href="mailto:contato@artomos.com">Iniciar um projeto</a>
+</p>
+
+## Sobre o projeto
+
+Este repositório contém a experiência institucional da Artomos. O site foi concebido como uma peça digital editorial: tipografia expressiva, direção de arte inspirada em escultura clássica, detalhes técnicos e animações que conectam cada seção em uma narrativa contínua.
+
+Mais do que apresentar serviços, o projeto demonstra a abordagem que levamos aos produtos dos nossos clientes: identidade forte, interação com propósito, implementação cuidadosa e performance pronta para produção.
+
+## O que construímos
+
+- Sites premium e landing pages com direção de arte própria
+- Experiências animadas e narrativas guiadas por scroll
+- Plataformas web e aplicativos mobile
+- Software sob medida e arquitetura escalável
+- Automações e integrações de processos
+- Produtos e interfaces com inteligência artificial aplicada
+
+## Experiência e movimento
+
+A abertura combina uma composição cinematográfica com uma sequência de frames AVIF sincronizada ao scroll. GSAP e ScrollTrigger coordenam as transições; Lenis fornece rolagem suave; e a experiência respeita `prefers-reduced-motion`, mantendo o conteúdo acessível para quem prefere menos movimento.
+
+Os assets, fontes e efeitos são servidos localmente. Isso evita dependências visuais externas, preserva a identidade da marca e oferece controle fino sobre carregamento e renderização.
 
 ## Stack
 
-- Vinext / Next.js
-- React 19
-- GSAP + ScrollTrigger
-- Lenis para smooth scroll
-- CSS global em `app/globals.css`
-- Assets públicos em `public/assets/artomos`
+| Camada | Tecnologia |
+| --- | --- |
+| Interface | React 19 + TypeScript |
+| App Router | Next.js 16 via Vinext |
+| Animação | GSAP, ScrollTrigger e Lenis |
+| Estilo | Tailwind CSS 4 + CSS global autoral |
+| Build | Vite 8 + Vinext |
+| Runtime | Node.js 22 |
+| Deploy | Docker ou Cloudflare Workers |
+| Qualidade | ESLint + testes do HTML renderizado |
 
-## Requisitos
+## SEO e identidade
 
-- Node.js `22.x` LTS (`>=22.13.0 <24`)
-- npm
+O projeto publica metadata social, canonical absoluto, dados estruturados Schema.org, `robots.txt`, `sitemap.xml` e web manifest. Todos os sinais usam `https://artomos.com` como endereço canônico e reforçam **Artomos** como nome oficial da marca.
 
-Use a versao indicada em `.nvmrc` quando possivel. O Node 24 no Windows pode encerrar o `vinext build` com uma assert nativa depois de concluir a geracao.
+Após cada deploy relevante, recomendamos validar a URL e enviar o sitemap no Google Search Console:
+
+```text
+https://artomos.com/sitemap.xml
+```
 
 ## Rodando localmente
+
+Requisitos: Node.js `22.x` LTS (`>=22.13.0 <24`) e npm.
 
 ```bash
 npm install
 npm run dev
 ```
 
-Depois abra `http://localhost:3000`.
+Acesse `http://localhost:3000`.
 
-## Validação
+## Qualidade e build
 
 ```bash
 npm run lint
 npm test
 ```
 
-`npm test` executa o build de produção e valida o HTML renderizado.
-
-## Estrutura
-
-```text
-app/
-  layout.tsx        Metadata, fontes locais e casca global
-  page.tsx          Composição principal da landing page
-
-src/
-  components/       Seções, layout e componentes visuais
-  config/site.ts    Conteúdo institucional e caminhos de mídia
-  data/             Dados de serviços, cases e processo
-  lib/              Utilitários de animação e helpers
-
-public/
-  assets/artomos/   Imagens, backgrounds e frames da transição
-  fonts/            Fontes locais usadas pelo CSS
-```
-
-## Assets
-
-- `public/assets/artomos/bc_*.png`: imagens base das seções.
-- `public/assets/artomos/transitions/1_2/*.avif`: sequência da transição hero/sobre.
-- `public/fonts/*.woff2`: fontes locais para evitar carregamento externo ou caminhos gerados.
-
-## Deploy
-
-O projeto está preparado para build com Vinext:
+`npm test` gera o build de produção e valida o HTML renderizado. Para executar o build isoladamente:
 
 ```bash
 npm run build
 ```
 
-As configurações de hosting ficam em `.openai/hosting.json`. O projeto não usa banco, migrations, exemplos D1 ou autenticação opcional do starter.
+O projeto também inclui um `Dockerfile` multi-stage pronto para produção:
+
+```bash
+docker build -t artomos-site .
+docker run --rm -p 3000:3000 artomos-site
+```
+
+## Estrutura
+
+```text
+app/                    Rotas, metadata e composição da landing page
+src/components/         Seções, layout e componentes visuais
+src/config/site.ts      Conteúdo institucional e configuração da marca
+src/data/               Serviços, projetos e etapas do processo
+src/lib/                Utilitários de animação e helpers
+public/assets/artomos/  Arte, imagens e frames das transições
+public/fonts/           Fontes locais
+tests/                  Validações do HTML de produção
+worker/                 Entrada para Cloudflare Workers
+```
+
+---
+
+<p align="center">
+  <strong>Artomos</strong> — criamos o que ainda não existe.<br />
+  <a href="https://artomos.com">artomos.com</a>
+</p>

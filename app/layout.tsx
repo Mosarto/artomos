@@ -1,61 +1,75 @@
 import type { Metadata } from "next";
-import { headers } from "next/headers";
 import "./globals.css";
 
-const title = "Artomos — Software, Aplicativos e Inteligência Artificial";
+const siteUrl = "https://artomos.com";
+const title = "Artomos | Sites Premium, Software e Inteligência Artificial";
 const description =
-  "A Artomos cria software sob medida, aplicativos, plataformas web, automações e soluções com inteligência artificial para empresas que precisam transformar ideias em produtos digitais.";
+  "A Artomos é um estúdio digital brasileiro que cria sites premium animados, software sob medida, aplicativos, automações e produtos com inteligência artificial.";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const requestHeaders = await headers();
-  const host =
-    requestHeaders.get("x-forwarded-host") ??
-    requestHeaders.get("host") ??
-    "localhost:3000";
-  const protocol =
-    requestHeaders.get("x-forwarded-proto") ??
-    (host.includes("localhost") ? "http" : "https");
-  const metadataBase = new URL(`${protocol}://${host}`);
-
-  return {
-    metadataBase,
+export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
+  applicationName: "Artomos",
+  title,
+  description,
+  category: "technology",
+  creator: "Artomos",
+  publisher: "Artomos",
+  keywords: [
+    "Artomos",
+    "sites premium",
+    "sites animados",
+    "desenvolvimento de software",
+    "software sob medida",
+    "inteligência artificial",
+    "aplicativos",
+    "plataformas web",
+    "automação",
+  ],
+  alternates: { canonical: "/", languages: { "pt-BR": "/" } },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
+  manifest: "/manifest.webmanifest",
+  openGraph: {
+    type: "website",
+    locale: "pt_BR",
+    url: "/",
+    siteName: "Artomos",
     title,
     description,
-    alternates: { canonical: "/" },
-    icons: {
-      icon: [
-        { url: "/favicon.ico", sizes: "any" },
-        { url: "/favicon.svg", type: "image/svg+xml" },
-        { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-      ],
-      shortcut: "/favicon.ico",
-      apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    images: [
+      {
+        url: "/og.png",
+        width: 1731,
+        height: 909,
+        alt: "Artomos — sites premium, software e inteligência artificial",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: ["/og.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
     },
-    openGraph: {
-      type: "website",
-      locale: "pt_BR",
-      url: "/",
-      siteName: "Artomos",
-      title,
-      description,
-      images: [
-        {
-          url: "/og.png",
-          width: 1731,
-          height: 909,
-          alt: "Artomos — arte, engenharia e inteligência artificial",
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: ["/og.png"],
-    },
-    robots: { index: true, follow: true },
-  };
-}
+  },
+};
 
 export default function RootLayout({
   children,

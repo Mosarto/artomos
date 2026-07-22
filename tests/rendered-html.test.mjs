@@ -2,13 +2,13 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-async function render() {
+async function render(pathname = "/") {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
   const { default: worker } = await import(workerUrl.href);
 
   return worker.fetch(
-    new Request("http://localhost/", {
+    new Request(new URL(pathname, "http://localhost/"), {
       headers: { accept: "text/html" },
     }),
     {
@@ -30,7 +30,7 @@ test("server-renders the Artomos landing page", async () => {
 
   const html = await response.text();
   assert.match(html, /<title>Artomos/i);
-  assert.match(html, /Software, Aplicativos e Intelig.ncia Artificial/i);
+  assert.match(html, /Sites Premium, Software e Intelig.ncia Artificial/i);
   assert.match(html, /CRIAMOS/i);
   assert.match(html, /SOBRE A ARTOMOS/i);
   assert.match(html, /PROJETOS/i);
@@ -43,7 +43,22 @@ test("server-renders the Artomos landing page", async () => {
   assert.match(html, /https:\/\/github\.com\/Mosarto\/aether/i);
   assert.match(html, /ENVIAR POR E-MAIL/i);
   assert.match(html, /Projeto privado/i);
+  assert.match(html, /https:\/\/artomos\.com\/#organization/i);
+  assert.match(html, /https:\/\/artomos\.com\/#website/i);
+  assert.doesNotMatch(html, /artomos\.com\.br/i);
   assert.doesNotMatch(html, /artomos-loader/i);
+});
+
+test("publishes crawl discovery files with the canonical domain", async () => {
+  const [robots, sitemap, manifest] = await Promise.all([
+    readFile(new URL("../dist/client/robots.txt", import.meta.url), "utf8"),
+    readFile(new URL("../dist/client/sitemap.xml", import.meta.url), "utf8"),
+    readFile(new URL("../dist/client/manifest.webmanifest", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(robots, /Sitemap: https:\/\/artomos\.com\/sitemap\.xml/i);
+  assert.match(sitemap, /<loc>https:\/\/artomos\.com\/<\/loc>/i);
+  assert.match(manifest, /"short_name": "Artomos"/i);
 });
 
 test("keeps starter-only surfaces out of the production app", async () => {
