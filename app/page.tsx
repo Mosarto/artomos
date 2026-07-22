@@ -14,12 +14,12 @@ const structuredData = {
       "@type": "Organization",
       "@id": "https://artomos.com/#organization",
       name: "Artomos",
-      alternateName: ["Artomos Software House", "Artomos Studio Digital"],
+      alternateName: ["Artomos Software House", "Artomos Software House Full Stack"],
       url: "https://artomos.com/",
       logo: "https://artomos.com/apple-touch-icon.png",
       email: "contato@artomos.com",
       description:
-        "Estúdio digital brasileiro especializado em sites premium animados, software sob medida, aplicativos, automações e inteligência artificial.",
+        "Software house full stack brasileira especializada em software sob medida, plataformas web, aplicativos mobile, automações e inteligência artificial.",
       areaServed: ["BR", "Worldwide"],
     },
     {
@@ -27,7 +27,7 @@ const structuredData = {
       "@id": "https://artomos.com/#website",
       url: "https://artomos.com/",
       name: "Artomos",
-      alternateName: "Artomos — Sites Premium e Software",
+      alternateName: "Artomos — Software House Full Stack",
       inLanguage: "pt-BR",
       publisher: { "@id": "https://artomos.com/#organization" },
     },
@@ -39,7 +39,7 @@ const structuredData = {
       image: "https://artomos.com/og.png",
       email: "contato@artomos.com",
       description:
-        "Criação de sites premium animados, produtos digitais, software sob medida e soluções com inteligência artificial.",
+        "Engenharia de software full stack, produtos digitais, plataformas web, aplicativos mobile, automações e soluções com inteligência artificial.",
       areaServed: ["BR", "Worldwide"],
       provider: { "@id": "https://artomos.com/#organization" },
     },

@@ -1,12 +1,12 @@
 <p align="center">
-  <img src="public/media/artomos-github-header.png" alt="Artomos em um notebook — sites premium, software e inteligência artificial" width="100%" />
+  <img src="public/media/artomos-github-header.png" alt="Artomos em um notebook — software, aplicativos e inteligência artificial" width="100%" />
 </p>
 
 <h1 align="center">Artomos</h1>
 
 <p align="center">
   <strong>Arte, estratégia e engenharia transformadas em experiências digitais.</strong><br />
-  Site institucional da Artomos — um estúdio digital brasileiro que cria sites premium animados, software sob medida e produtos com inteligência artificial.
+  Site institucional da Artomos — uma software house full stack que cria produtos digitais, plataformas web, aplicativos mobile, automações e soluções com inteligência artificial.
 </p>
 
 <p align="center">
@@ -17,18 +17,19 @@
 
 ## Sobre o projeto
 
-Este repositório contém a experiência institucional da Artomos. O site foi concebido como uma peça digital editorial: tipografia expressiva, direção de arte inspirada em escultura clássica, detalhes técnicos e animações que conectam cada seção em uma narrativa contínua.
+Este repositório contém a experiência institucional da Artomos. O projeto demonstra como construímos um site premium animado com tipografia expressiva, direção de arte inspirada em escultura clássica, detalhes técnicos e transições que conectam cada seção em uma narrativa contínua.
 
 Mais do que apresentar serviços, o projeto demonstra a abordagem que levamos aos produtos dos nossos clientes: identidade forte, interação com propósito, implementação cuidadosa e performance pronta para produção.
 
 ## O que construímos
 
-- Sites premium e landing pages com direção de arte própria
-- Experiências animadas e narrativas guiadas por scroll
-- Plataformas web e aplicativos mobile
-- Software sob medida e arquitetura escalável
+- Software sob medida e produtos full stack
+- Plataformas web, APIs e sistemas internos
+- Aplicativos mobile e experiências conectadas
+- Arquitetura cloud, integrações e DevOps
 - Automações e integrações de processos
 - Produtos e interfaces com inteligência artificial aplicada
+- Sites e experiências digitais com direção de arte própria
 
 ## Experiência e movimento
 

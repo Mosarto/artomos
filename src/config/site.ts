@@ -8,9 +8,9 @@ export const siteConfig = {
   url: "https://artomos.com",
   locale: "pt-BR",
   metadata: {
-    title: "Artomos | Sites Premium, Software e Inteligência Artificial",
+    title: "Artomos — Software, Aplicativos e Inteligência Artificial",
     description:
-      "A Artomos é um estúdio digital brasileiro que cria sites premium animados, software sob medida, aplicativos, automações e produtos com inteligência artificial.",
+      "A Artomos é uma software house full stack que cria software sob medida, plataformas web, aplicativos mobile, automações e soluções com inteligência artificial.",
     canonicalPath: "/",
   },
   navigation: [

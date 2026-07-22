@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 const siteUrl = "https://artomos.com";
-const title = "Artomos | Sites Premium, Software e Inteligência Artificial";
+const title = "Artomos — Software, Aplicativos e Inteligência Artificial";
 const description =
-  "A Artomos é um estúdio digital brasileiro que cria sites premium animados, software sob medida, aplicativos, automações e produtos com inteligência artificial.";
+  "A Artomos é uma software house full stack que cria software sob medida, plataformas web, aplicativos mobile, automações e soluções com inteligência artificial.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -16,8 +16,6 @@ export const metadata: Metadata = {
   publisher: "Artomos",
   keywords: [
     "Artomos",
-    "sites premium",
-    "sites animados",
     "desenvolvimento de software",
     "software sob medida",
     "inteligência artificial",
@@ -48,7 +46,7 @@ export const metadata: Metadata = {
         url: "/og.png",
         width: 1731,
         height: 909,
-        alt: "Artomos — sites premium, software e inteligência artificial",
+        alt: "Artomos — software, aplicativos e inteligência artificial",
       },
     ],
   },

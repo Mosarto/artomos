@@ -30,7 +30,7 @@ test("server-renders the Artomos landing page", async () => {
 
   const html = await response.text();
   assert.match(html, /<title>Artomos/i);
-  assert.match(html, /Sites Premium, Software e Intelig.ncia Artificial/i);
+  assert.match(html, /Software, Aplicativos e Intelig.ncia Artificial/i);
   assert.match(html, /CRIAMOS/i);
   assert.match(html, /SOBRE A ARTOMOS/i);
   assert.match(html, /PROJETOS/i);
